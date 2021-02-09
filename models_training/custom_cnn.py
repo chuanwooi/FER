@@ -23,8 +23,7 @@ train_dataset    = './fer2013/fer2013_train.csv'
 eval_dataset     = './fer2013/fer2013_eval.csv'
 
 def preprocess_input(x):
-  x -= 128.8006	# np.mean(train_dataset)
-	x /= 64.6497	# np.std(train_dataset)
+	x -= 128.8006	# np.mean(train_dataset)
 	return x
 
 def get_data(dataset):
@@ -99,6 +98,7 @@ model.summary()
 model.compile(loss=categorical_crossentropy,
               optimizer=Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=1e-7),
               metrics=['accuracy'])
+
 lr_reducer = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=3, verbose=1)
 early_stopper = EarlyStopping(monitor='val_loss', min_delta=0, patience=10, verbose=1, mode='min')
 checkpointer = ModelCheckpoint('./fer2013/CustomModel.h5', monitor='val_loss', verbose=1, save_best_only=True)
