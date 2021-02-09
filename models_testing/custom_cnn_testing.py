@@ -13,8 +13,8 @@ predict_batch_size = 1
 model = load_model("./trained_models/CustomModel.h5")
 
 def preprocess_input(x):
-  x -= 128.8006	
-  x /= 64.6497	
+	x -= 128.8006	
+	x /= 64.6497	
 	return x
 
 def get_data(dataset):
