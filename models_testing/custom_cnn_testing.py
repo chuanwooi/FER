@@ -7,6 +7,8 @@ import itertools
 import matplotlib.pyplot as plt
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 
+img_width, img_height =	64, 64
+
 test_data_dir = "./fer2013/fer2013_test.csv"
 predict_batch_size = 1
 
