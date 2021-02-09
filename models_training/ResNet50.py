@@ -64,22 +64,13 @@ base_model = VGGFace(
     weights     = 'vggface',
     input_shape = (img_height, img_width, 3))
 
-# Places x as the output of the pre-trained model
 x = base_model.output
 
-# Flattens the input. Does not affect the batch size
+# Re-architect fully-connected layer
 x = Flatten()(x)
-
-# Add a fully-connected layer and a logistic layer
-# Dense implements the operation: output = activation(dot(input, kernel) + bias(only applicable if use_bias is True))
-    # units:        Positive integer, dimensionality of the output space
-    # activation:   Activation function to use
-    # input shape:  nD tensor with shape: (batch_size, ..., input_dim)
-    # output shape: nD tensor with shape: (batch_size, ..., units)
 x = Dense(1024, activation = 'relu')(x)
 predictions = Dense(num_classes, activation = 'softmax')(x)
 
-# The model we will train
 model = Model(inputs = base_model.input, outputs = predictions)
 model.summary()
 
@@ -87,6 +78,7 @@ model.compile(
     optimizer   = SGD(lr = 1e-4, momentum = 0.9, decay = 0.0, nesterov = True),
     loss        = 'categorical_crossentropy', 
     metrics     = ['accuracy'])
+
 lr_reducer = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=3, verbose=1)
 early_stopper = EarlyStopping(monitor='val_loss', min_delta=0, patience=10, verbose=1, mode='min')
 checkpointer = ModelCheckpoint('./fer2013/ResNet50.h5', monitor='val_loss', verbose=1, save_best_only=True)
